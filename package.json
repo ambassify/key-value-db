@@ -1,0 +1,19 @@
+{
+  "name": "@ambassify/key-value-db",
+  "version": "0.1.0",
+  "description": "Providers persistent key-value storage",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "eslint src",
+    "release": "npm version patch && npm publish"
+  },
+  "author": "Ambassify <dev@ambassify.com>",
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.140.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.9.0",
+    "eslint-config-ambassify": "^1.1.0"
+  }
+}

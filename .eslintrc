@@ -1,0 +1,14 @@
+{
+    "root": true,
+    "extends": [
+        "eslint-config-ambassify/node",
+        "eslint-config-ambassify/babel"
+    ],
+    "rules": {
+        "node/no-unsupported-features": 0,
+        "node/no-missing-import": 0,
+        "node/no-missing-require": 0,
+        "node/no-unpublished-import": 0,
+        "node/no-unpublished-require": 0
+    }
+}
