@@ -15,5 +15,20 @@
   "devDependencies": {
     "eslint": "^4.9.0",
     "eslint-config-ambassify": "^1.1.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ambassify/key-value-db.git"
+  },
+  "keywords": [
+    "key",
+    "value",
+    "key-value",
+    "db",
+    "database"
+  ],
+  "bugs": {
+    "url": "https://github.com/ambassify/key-value-db/issues"
+  },
+  "homepage": "https://github.com/ambassify/key-value-db#readme"
 }
