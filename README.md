@@ -14,7 +14,10 @@ npm install --save @ambassify/key-value-db
 ```
 
 ```js
-const { DYNAMODB, REDIS, createKeyValueTable } = require('@ambassify/key-value-db');
+const {
+    DYNAMODB, REDIS, MEMORY,
+    createKeyValueTable
+} = require('@ambassify/key-value-db');
 
 const dynamodb = createKeyValueTable(DYNAMODB, {
     providerConfig: { region: 'eu-west-1' },
@@ -25,6 +28,8 @@ const redis = createKeyValueTable(REDIS, {
     connectionString: 'redis://127.0.0.1:6379',
     ioredisOptions: { connectTimeout: 1000 }
 });
+
+const memory = createKeyValueTable(MEMORY);
 
 ```
 
@@ -57,6 +62,16 @@ const db = createKeyValueTable(REDIS, options)
 - `options`
   - `connectionString` [redis:// connection string](http://www.iana.org/assignments/uri-schemes/prov/redis)
   - `ioredisOptions` Options to pass along to [ioredis](https://github.com/luin/ioredis)
+
+#### MEMORY
+
+```js
+const db = createKeyValueTable(MEMORY, options)
+```
+
+- `options`
+  - `serializer` function used to serialize data before storing, may return a Promise, defaults to `JSON.stringify`
+  - `deserializer` function used to deserialize stored data, may return a Promise, defaults to `JSON.parse`
 
 ### API
 
