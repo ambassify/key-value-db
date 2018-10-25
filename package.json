@@ -1,6 +1,6 @@
 {
   "name": "@ambassify/key-value-db",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Providers persistent key-value storage",
   "main": "src/index.js",
   "scripts": {
