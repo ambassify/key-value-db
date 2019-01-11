@@ -61,7 +61,12 @@ class DynamoDBKeyValueTable {
     }
 
     _getExpiryDate(ttl = this.ttl) {
-        return ttl > 0 ? Date.now() + ttl : 0;
+        ttl = parseInt(ttl, 10);
+
+        if (ttl <= 0)
+            return 0;
+
+        return Math.floor((Date.now() + ttl) / 1000);
     }
 
     set(key, value, ttl = this.ttl) {
@@ -121,7 +126,7 @@ class DynamoDBKeyValueTable {
 
                 const expiryColumn = Item[this.expiry.column];
                 const expiryDate = expiryColumn ? expiryColumn[this.expiry.type] : 0;
-                if (expiryDate > 0 && expiryDate < Date.now())
+                if (expiryDate > 0 && (expiryDate * 1000) < Date.now())
                     return null;
 
                 return Item[this.value.column][this.value.type];
