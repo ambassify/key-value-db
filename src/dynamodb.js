@@ -125,9 +125,27 @@ class DynamoDBKeyValueTable {
                     return Item;
 
                 const expiryColumn = Item[this.expiry.column];
-                const expiryDate = expiryColumn ? expiryColumn[this.expiry.type] : 0;
+                let expiryDate = expiryColumn ? expiryColumn[this.expiry.type] : 0;
+
+                /*
+                 * At the time of writing an Epoch timestamp (ex. 1547198869)
+                 * is 10 characters wide. Old code used to store the timestamp
+                 * as milliseconds which we attempt to detect by checking if
+                 * the expiryDate is larger than 9999999999 (ten 9's) which
+                 * corresponds to Sun Apr 26 1970 18:46:39 GMT+0100 when viewed
+                 * as milliseconds. It is VERY unlikely we would ever have a
+                 * legitimate expiry before this date.
+                 *
+                 * We will reach the 9999999999 (ten 9's) timestamp in seconds
+                 * by Sat Nov 20 2286 18:46:39 GMT+0100. We assume that this
+                 * line will have been removed by that time and all legacy
+                 * items have been removed from the database by the code below.
+                 */
+                if (expiryDate > 9999999999)
+                    expiryDate = Math.floor(expiryDate / 1000);
+
                 if (expiryDate > 0 && (expiryDate * 1000) < Date.now())
-                    return null;
+                    return this.remove(key).then(() => null);
 
                 return Item[this.value.column][this.value.type];
             });
