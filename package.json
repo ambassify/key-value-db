@@ -11,7 +11,7 @@
   "license": "MIT",
   "dependencies": {
     "aws-sdk": "^2.140.0",
-    "ioredis": "^3.2.2"
+    "ioredis": "^4.28.2"
   },
   "devDependencies": {
     "eslint": "^4.9.0",
