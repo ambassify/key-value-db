@@ -102,7 +102,7 @@ class DynamoDBKeyValueTable {
                     }
                 }
             }
-        }).promise();
+        }).promise().then(noop);
     }
 
     remove(key) {
