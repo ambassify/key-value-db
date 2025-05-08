@@ -10,7 +10,7 @@
   "author": "Ambassify <dev@ambassify.com>",
   "license": "MIT",
   "dependencies": {
-    "aws-sdk": "^2.140.0",
+    "@aws-sdk/client-dynamodb": "^3.804.0",
     "ioredis": "^5.3.1"
   },
   "devDependencies": {

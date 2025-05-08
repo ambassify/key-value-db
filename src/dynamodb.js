@@ -1,4 +1,10 @@
-const DynamoDB = require('aws-sdk/clients/dynamodb');
+const {
+    DynamoDBClient,
+    PutItemCommand,
+    UpdateItemCommand,
+    DeleteItemCommand,
+    GetItemCommand
+} = require('@aws-sdk/client-dynamodb');
 
 const noop = function() {};
 
@@ -24,7 +30,7 @@ class DynamoDBKeyValueTable {
             ttl = 0
         } = options;
 
-        this._db = new DynamoDB(providerConfig);
+        this._db = new DynamoDBClient(providerConfig);
 
         this.ttl = ttl;
         this.table = table;
@@ -72,20 +78,18 @@ class DynamoDBKeyValueTable {
     set(key, value, ttl = this.ttl) {
         const expiryDate = this._getExpiryDate(ttl);
 
-        const item = {
+        const command = new PutItemCommand({
             TableName: this.table,
             Item: this._buildKeyValue(key, value, expiryDate)
-        };
+        });
 
-        return this._db.putItem(item)
-            .promise()
-            .then(noop);
+        return this._db.send(command).then(noop);
     }
 
     incr(key, amount = 1, ttl = this.ttl) {
         const expiryDate = this._getExpiryDate(ttl);
 
-        return this._db.updateItem({
+        const command = new UpdateItemCommand({
             TableName: this.table,
             Key: this._buildColumnValue(this.key.column, this.key.type, key),
             AttributeUpdates: {
@@ -102,24 +106,27 @@ class DynamoDBKeyValueTable {
                     }
                 }
             }
-        }).promise().then(noop);
+        });
+
+        return this._db.send(command).then(noop);
     }
 
     remove(key) {
-        return this._db.deleteItem({
+        const command = new DeleteItemCommand({
             TableName: this.table,
             Key: this._buildColumnValue(this.key.column, this.key.type, key)
-        }).promise().then(noop);
+        });
+
+        return this._db.send(command).then(noop);
     }
 
     get(key) {
-        const item = {
+        const command = new GetItemCommand({
             TableName: this.table,
             Key: this._buildColumnValue(this.key.column, this.key.type, key)
-        };
+        });
 
-        return this._db.getItem(item)
-            .promise()
+        return this._db.send(command)
             .then(({ Item }) => {
                 if (!Item)
                     return Item;
