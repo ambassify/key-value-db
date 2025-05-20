@@ -1,4 +1,4 @@
-function noop () {}
+function noop() {}
 
 class MemoryKeyValueTable {
 
