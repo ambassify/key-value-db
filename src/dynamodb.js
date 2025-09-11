@@ -154,7 +154,11 @@ class DynamoDBKeyValueTable {
                 if (expiryDate > 0 && (expiryDate * 1000) < Date.now())
                     return this.remove(key).then(() => null);
 
-                return Item[this.value.column][this.value.type];
+                const valueColumn = Item[this.value.column];
+                if (!valueColumn || !valueColumn[this.value.type])
+                    return (void 0);
+
+                return valueColumn[this.value.type];
             });
     }
 }
